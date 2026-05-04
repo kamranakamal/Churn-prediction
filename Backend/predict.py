@@ -16,5 +16,12 @@ def predict_out(data):
     prediction_class = model.predict(data_enc)[0]
     pred_probs = model.predict_proba(data_enc)[0]
     conf_score = pred_probs[prediction_class].item()
+    pred_probs = {i:pred_probs[i].item() for i in range(2)}
+    label = "Yes" if prediction_class == 1 else "No"
+    prediction_dict = {"prediction": int(prediction_class),
+        "label": label,
+        "confidence score":conf_score,
+        "probabilities":pred_probs
+    }
 
-    return prediction_class, pred_probs, conf_score
+    return prediction_dict

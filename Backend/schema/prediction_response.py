@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Dict
 
-class PredictionResponsse(BaseModel):
+class PredictionResponse(BaseModel):
     prediction : int = Field(..., description="Model's Prediction Output", alias='prediction', examples=[0,1])
 
     label: str = Field(..., description="Model's prediction label class", alias='label', examples=['No', 'Yes'])
