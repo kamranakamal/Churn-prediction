@@ -38,6 +38,7 @@ except Exception as e:
     raise RuntimeError(f"Model loading failed: {e}")
 app = FastAPI()
 
+MODEL_VERSION = '1.0.0'
 
 
 @app.post('/predict')
@@ -62,7 +63,9 @@ def metrics():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", 
+            "version":MODEL_VERSION,
+            "model_loaded": model is not None}
 
 @app.get('/')
 def home():
