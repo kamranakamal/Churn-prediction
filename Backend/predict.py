@@ -13,5 +13,7 @@ def predict_out(data):
     data = data.model_dump(by_alias=True)
     df = pd.DataFrame([data])
     data_enc = preprocessor.transform(df)
-    prediction = model.predict(data_enc)[0]
-    return prediction
+    prediction_class = model.predict(data_enc)[0]
+    pred_probs = model.predict_proba(data_enc)[0]
+
+    return prediction_class, pred_probs
