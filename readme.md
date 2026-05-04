@@ -1,11 +1,12 @@
 # Customer Churn Analysis
 
 ## Overview
-This project trains a churn prediction model and serves it via a FastAPI endpoint.
+This project trains a churn prediction model, serves it via a FastAPI endpoint, and includes a Streamlit UI for interactive predictions.
 
 ## Features
 - Churn prediction model training
 - FastAPI inference endpoint
+- Streamlit web app for interactive input
 
 ## Installation
 Clone the repository and install dependencies:
@@ -25,6 +26,12 @@ python scripts/model_train.py
 uvicorn main:app --reload
 ```
 
+### Run the Streamlit app
+```bash
+streamlit run frontend.py
+```
+Then open http://localhost:8501 in your browser.
+
 ## Data
 The dataset contains customer information including:
 - Customer demographics
@@ -33,7 +40,10 @@ The dataset contains customer information including:
 - Churn status
 
 ## Results
-Predictions are returned from the `/predict` endpoint.
+Predictions are returned from the `/predict` endpoint and the Streamlit UI.
+
+## Screenshots
+Add Streamlit UI screenshots here.
 
 ## License
 MIT License
