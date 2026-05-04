@@ -4,6 +4,8 @@ numpy
 joblib
 xgboost
 pydantic
+streamlit
+requests
 uvicorn
 fastapi[standard]
 
