@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, field_validator
 from typing import Annotated, Literal
 import joblib 
 import pandas as pd
@@ -18,6 +18,14 @@ class Customer(BaseModel):
     Contract_length: Annotated[Literal['Monthly', 'Quarterly', 'Annual'], Field(..., alias='Contract Length')]
     Total_spend: Annotated[int, Field(..., alias='Total Spend')]
     Last_interaction: Annotated[int, Field(..., alias='Last Interaction')]
+
+    @field_validator('Subscription_type', 'Contract_length')
+    @classmethod
+    def capitalize_col(cls, v:str) -> str:
+        v = v.strip().title()
+        return v
+
+
 
  
 

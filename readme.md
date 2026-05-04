@@ -3,15 +3,38 @@
 ## Overview
 This project trains a churn prediction model, serves it via a FastAPI endpoint, and includes a Streamlit UI for interactive predictions.
 
+## Project Structure
+```
+Backend/
+	main.py
+	requirements.txt
+	Models/
+data/
+	customer_churn_dataset-testing-master.csv
+notebooks/
+	main.ipynb
+scripts/
+	model_train.py
+	utils.py
+frontend.py
+requirements.txt
+readme.md
+```
+
 ## Features
 - Churn prediction model training
 - FastAPI inference endpoint
 - Streamlit web app for interactive input
 
 ## Installation
-Clone the repository and install dependencies:
+Install the base dependencies:
 ```bash
 pip install -r requirements.txt
+```
+
+If you only want the API dependencies:
+```bash
+pip install -r Backend/requirements.txt
 ```
 
 ## Usage
@@ -20,10 +43,11 @@ pip install -r requirements.txt
 ```bash
 python scripts/model_train.py
 ```
+This creates the artifacts in `Backend/Models/` used by the API.
 
 ### Run the API
 ```bash
-uvicorn main:app --reload
+uvicorn Backend.main:app --reload
 ```
 
 ### Run the Streamlit app
@@ -40,7 +64,7 @@ The dataset contains customer information including:
 - Churn status
 
 ## Results
-Predictions are returned from the `/predict` endpoint and the Streamlit UI.
+Predictions are returned from the `/predict` endpoint and the Streamlit UI. The `/metrics` endpoint returns total API prediction count.
 
 ## Screenshots
 Add Streamlit UI screenshots here.
