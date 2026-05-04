@@ -15,5 +15,6 @@ def predict_out(data):
     data_enc = preprocessor.transform(df)
     prediction_class = model.predict(data_enc)[0]
     pred_probs = model.predict_proba(data_enc)[0]
+    conf_score = pred_probs[prediction_class].item()
 
-    return prediction_class, pred_probs
+    return prediction_class, pred_probs, conf_score

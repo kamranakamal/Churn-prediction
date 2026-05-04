@@ -14,7 +14,7 @@ total_prediction = 0
 @app.post('/predict')
 def predict(data:Customer):
     try:
-        prediction, pred_probs = predict_out(data)
+        prediction, pred_probs, conf_score = predict_out(data)
         pred_probs = {i:pred_probs[i].item() for i in range(2)}
     except Exception as e:
         return JSONResponse(status_code=500, content=str(e))
@@ -23,7 +23,8 @@ def predict(data:Customer):
 
     return JSONResponse(status_code=200, content={"prediction": int(prediction),
         "label": "Yes" if prediction == 1 else "No",
-        "Probs":pred_probs
+        "confidence score":conf_score,
+        "probabilities":pred_probs
     })
       
 
