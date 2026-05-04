@@ -3,6 +3,8 @@ FROM python:3.11-slim
 WORKDIR /app
 #Copy only requirements.txt for caching 
 COPY requirements.txt ./
+
+
 #Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 

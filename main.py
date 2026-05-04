@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, computed_field
 from typing import Annotated, Literal
@@ -26,13 +27,7 @@ model = joblib.load("Models/model.pkl")
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 
 @app.post('/predict')
 def predict(data:Customer):
@@ -43,17 +38,16 @@ def predict(data:Customer):
     global total_prediction
     total_prediction+=1 
 
-    return {
-        "prediction": int(prediction),
+    return JSONResponse(status_code=200, content={"prediction": int(prediction),
         "label": "Yes" if prediction == 1 else "No"
-    }
+    })
       
 
 
 @app.get('/metrics')
 def metrics():
     global total_prediction
-    return {"total_predictions": total_prediction}
+    return JSONResponse(status_code=200, content={"total_predictions": total_prediction})
 
 
 
