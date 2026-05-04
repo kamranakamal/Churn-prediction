@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 import joblib 
 from schema.input_data import Customer
 from predict import model, MODEL_VERSION, predict_out
-
+from schema.prediction_response import PredictionResponsse
 
 app = FastAPI()
 
@@ -11,7 +11,7 @@ app = FastAPI()
 total_prediction = 0 
 
 
-@app.post('/predict')
+@app.post('/predict', response_model=PredictionResponsse)
 def predict(data:Customer):
     try:
         prediction, pred_probs, conf_score = predict_out(data)
