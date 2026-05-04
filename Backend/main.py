@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field, computed_field, field_validator
 from typing import Annotated, Literal
 import joblib 
 import pandas as pd
+import os
 
 
 class Customer(BaseModel):
@@ -30,9 +31,11 @@ class Customer(BaseModel):
  
 
 total_prediction = 0 
-preprocessor = joblib.load('Backend/Models/preprocessor.pkl')
-model = joblib.load("Backend/Models/model.pkl")
-
+try:
+    preprocessor = joblib.load('./Models/preprocessor.pkl')
+    model = joblib.load("./Models/model.pkl")
+except Exception as e:
+    raise RuntimeError(f"Model loading failed: {e}")
 app = FastAPI()
 
 
@@ -57,7 +60,13 @@ def metrics():
     global total_prediction
     return JSONResponse(status_code=200, content={"total_predictions": total_prediction})
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
+@app.get('/')
+def home():
+    return {'message': 'Customer churn prediction'}
 
 
     
