@@ -30,8 +30,8 @@ class Customer(BaseModel):
  
 
 total_prediction = 0 
-preprocessor = joblib.load('Models/preprocessor.pkl')
-model = joblib.load("Models/model.pkl")
+preprocessor = joblib.load('Backend/Models/preprocessor.pkl')
+model = joblib.load("Backend/Models/model.pkl")
 
 app = FastAPI()
 
