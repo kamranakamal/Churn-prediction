@@ -1,0 +1,64 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field, computed_field
+from typing import Annotated, Literal
+import joblib 
+import pandas as pd
+
+
+class Customer(BaseModel):
+    Age:Annotated[int, Field(..., alias='Age',gt=0, lt=150, description='Age of the customer')]
+    Gender:Annotated[Literal['Male', 'Female'], Field(...,alias='Gender', description='Gender of the customer')]
+    Tenure: Annotated[int, Field(..., alias='Tenure',description='Tenure of the customer', gt=0)]
+    Usage_frequency:Annotated[int, Field(..., alias='Usage Frequency')]
+    Support_calls: Annotated[int, Field(...,alias='Support Calls', description='Number of support calls')]
+    Payment_delay: Annotated[int, Field(..., alias='Payment Delay')]
+    Subscription_type:Annotated[Literal['Basic', 'Standard', 'Premium'], Field(..., alias='Subscription Type')]
+    Contract_length: Annotated[Literal['Monthly', 'Quarterly', 'Annual'], Field(..., alias='Contract Length')]
+    Total_spend: Annotated[int, Field(..., alias='Total Spend')]
+    Last_interaction: Annotated[int, Field(..., alias='Last Interaction')]
+
+ 
+
+total_prediction = 0 
+preprocessor = joblib.load('Models/preprocessor.pkl')
+model = joblib.load("Models/model.pkl")
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.post('/predict')
+def predict(data:Customer):
+    data = data.model_dump(by_alias=True)
+    df = pd.DataFrame([data])
+    data_enc = preprocessor.transform(df)
+    prediction = model.predict(data_enc)[0]
+    global total_prediction
+    total_prediction+=1 
+
+    return {
+        "prediction": int(prediction),
+        "label": "Yes" if prediction == 1 else "No"
+    }
+      
+
+
+@app.get('/metrics')
+def metrics():
+    global total_prediction
+    return {"total_predictions": total_prediction}
+
+
+
+
+    
+
+
+
